@@ -37,7 +37,7 @@ export default function Header() {
                         <Icon name="HeartIcon" variant="solid" size={20} className="text-white" />
                     </div>
                     <span className="text-xl font-bold tracking-tight text-foreground">
-                        ValentineViral<span className="text-primary">Card</span>
+                        Valentine<span className="text-primary">Card</span>
                     </span>
                 </Link>
 
@@ -48,7 +48,7 @@ export default function Header() {
                             key={link.id}
                             href={link.href}
                             className={`text-sm font-semibold transition-colors ${isActive(link.href)
-                                    ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                                ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
                                 }`}
                         >
                             {link.label}
@@ -90,7 +90,7 @@ export default function Header() {
                                 href={link.href}
                                 onClick={() => setIsMenuOpen(false)}
                                 className={`block py-3 text-base font-semibold transition-colors ${isActive(link.href)
-                                        ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                                    ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
                                     }`}
                             >
                                 {link.label}
