@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
 import Icon from '@/components/ui/AppIcon';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -132,7 +131,7 @@ export default function Homepage() {
             {showQuiz && <QuizController onClose={() => setShowQuiz(false)} />}
             {showCardCreator && <CardCreator onClose={() => setShowCardCreator(false)} />}
 
-            <Footer />
+
         </div>
     );
 }

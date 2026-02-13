@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
 import CardDisplay from './components/CardDisplay';
 import CountdownDisplay from './components/CountdownDisplay';
 import SharePanel from './components/SharePanel';
@@ -27,7 +26,7 @@ export default function CardViewPage() {
   return (
     <>
       <Header />
-      
+
       <main className="min-h-screen bg-background pt-20">
         {/* Hero Section with Card Display */}
         <section className="py-12 border-b border-border">
@@ -46,14 +45,14 @@ export default function CardViewPage() {
                   recipientName={cardData.recipientName}
                   senderName={cardData.senderName}
                   isRevealed={cardData.isRevealed} />
-                
+
 
                 {/* Action Buttons */}
                 <div className="flex gap-3">
                   <Link
                     href="/create-e-card"
                     className="flex-1 px-6 py-3 rounded-xl bg-muted text-foreground font-semibold hover:bg-muted/80 transition-all flex items-center justify-center gap-2">
-                    
+
                     <Icon name="PencilIcon" size={20} />
                     Edit Card
                   </Link>
@@ -75,7 +74,7 @@ export default function CardViewPage() {
 
         {/* Countdown Section (only show if not revealed) */}
         {!cardData.isRevealed &&
-        <section className="py-12 border-b border-border">
+          <section className="py-12 border-b border-border">
             <div className="max-w-4xl mx-auto px-6">
               <CountdownDisplay />
             </div>
@@ -84,23 +83,23 @@ export default function CardViewPage() {
 
         {/* Revealed Message Section (only show if revealed) */}
         {cardData.isRevealed &&
-        <section className="py-20 border-b border-border">
+          <section className="py-20 border-b border-border">
             <div className="max-w-4xl mx-auto px-6">
               <div className="glass-card p-12 backdrop-blur-xl text-center space-y-6 relative overflow-hidden">
                 {/* Confetti Animation Container */}
                 <div className="absolute inset-0 pointer-events-none">
                   {Array.from({ length: 20 }).map((_, i) =>
-                <div
-                  key={`confetti_${i}`}
-                  className="confetti absolute w-3 h-3 rounded-full"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: '-10%',
-                    backgroundColor: ['#DC2626', '#EC4899', '#F472B6'][Math.floor(Math.random() * 3)],
-                    animationDelay: `${Math.random() * 2}s`
-                  }} />
+                    <div
+                      key={`confetti_${i}`}
+                      className="confetti absolute w-3 h-3 rounded-full"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: '-10%',
+                        backgroundColor: ['#DC2626', '#EC4899', '#F472B6'][Math.floor(Math.random() * 3)],
+                        animationDelay: `${Math.random() * 2}s`
+                      }} />
 
-                )}
+                  )}
                 </div>
 
                 <div className="relative z-10">
@@ -133,7 +132,7 @@ export default function CardViewPage() {
               Create Your Own
               <span className="block text-gradient-valentine mt-2">Valentine Card</span>
             </h2>
-            
+
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Make someone's Valentine's Day unforgettable with a personalized AI-powered card
             </p>
@@ -141,7 +140,7 @@ export default function CardViewPage() {
             <Link
               href="/create-e-card"
               className="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-primary text-white font-bold text-xl hover:bg-primary/90 transition-all hover:scale-105 romantic-glow">
-              
+
               <Icon name="SparklesIcon" size={24} />
               <span>Start Creating</span>
               <Icon name="ArrowRightIcon" size={24} />
@@ -150,7 +149,7 @@ export default function CardViewPage() {
         </section>
       </main>
 
-      <Footer />
+
     </>);
 
 }

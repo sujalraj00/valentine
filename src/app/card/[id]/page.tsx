@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
 import ValentineQuizCard from '@/components/ui/valentine-quiz-card';
 import { Heart, Loader2 } from 'lucide-react';
 
@@ -65,7 +64,7 @@ export default function HostedCardPage() {
         <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
             <Header />
 
-            <main className="flex-grow flex items-center justify-center p-6 relative">
+            <main className="flex-grow flex items-center justify-center p-6 pt-32 relative">
                 {/* Romantic Background Decoration */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
                     <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[100px] animate-pulse" />
@@ -97,7 +96,7 @@ export default function HostedCardPage() {
                 </div>
             </main>
 
-            <Footer />
+
         </div>
     );
 }

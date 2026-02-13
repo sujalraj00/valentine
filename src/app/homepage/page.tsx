@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/common/Header';
-import Footer from '@/components/common/Footer';
 import HeroGallery from './components/HeroGallery';
 import CountdownTimer from './components/CountdownTimer';
 import ThemeCarousel from './components/ThemeCarousel';
@@ -204,7 +203,7 @@ export default function Homepage() {
             {showQuiz && <QuizController onClose={() => setShowQuiz(false)} />}
             {showCardCreator && <CardCreator onClose={() => setShowCardCreator(false)} />}
 
-            <Footer />
+
         </div>
     );
 }
