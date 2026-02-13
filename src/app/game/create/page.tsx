@@ -16,13 +16,42 @@ export default function CreatorPage() {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const result = reader.result as string;
-                setPreview(result);
-            };
-            reader.readAsDataURL(file);
+            resizeImage(file, 800, 800, (resizedDataUrl) => {
+                setPreview(resizedDataUrl);
+            });
         }
+    };
+
+    const resizeImage = (file: File, maxWidth: number, maxHeight: number, callback: (url: string) => void) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target?.result as string;
+            img.onload = () => {
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx?.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.7)); // Compress to 70% quality JPEG
+            };
+        };
     };
 
     const handleGenerateLink = async () => {
@@ -46,10 +75,12 @@ export default function CreatorPage() {
             }
 
             const data = await res.json();
-            const generatedLink = `${window.location.origin}/game/play?id=${data.gameId}`;
+            // Force production URL for shareable links
+            const baseUrl = 'https://valentine-eight-alpha-77.vercel.app';
+            const generatedLink = `${baseUrl}/game/play?id=${data.gameId}`;
             setLink(generatedLink);
         } catch (e) {
-            alert("Error creating game! Image might be too large (max 4MB) or server issue.");
+            alert("Error creating game! Please try a smaller photo or check your connection.");
             console.error(e);
         } finally {
             setLoading(false);

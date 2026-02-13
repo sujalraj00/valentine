@@ -144,11 +144,11 @@ export default function BookViewer({ data, isEditable = false }: BookViewerProps
                 <button
                     onClick={handleExportPDF}
                     disabled={isExporting}
-                    className="p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full text-white transition-all shadow-lg flex items-center gap-2"
+                    className="p-3 bg-white/90 hover:bg-white backdrop-blur-md border border-white/20 rounded-full text-black transition-all shadow-lg flex items-center gap-2"
                     title="Export as PDF"
                 >
                     {isExporting ? (
-                        <div className="w-5 h-5 border-2 border-white/50 border-t-white rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-black/50 border-t-black rounded-full animate-spin" />
                     ) : (
                         <Icon name="DocumentArrowDownIcon" size={20} />
                     )}

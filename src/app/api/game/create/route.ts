@@ -2,14 +2,6 @@ import { NextResponse } from 'next/server';
 import dbConnect from '../../../../lib/mongodb';
 import Game from '../../../../models/Game';
 
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: '4mb', // Set limit for base64 images
-        },
-    },
-};
-
 export async function POST(request: Request) {
     try {
         await dbConnect();
