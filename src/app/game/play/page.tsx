@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useGame } from '../context/GameContext';
 import Phase0_Upload from '../components/Phase0_Upload';
@@ -9,7 +9,7 @@ import Phase2_Question from '../components/Phase2_Question';
 import Phase3_DatePlanner from '../components/Phase3_DatePlanner';
 import Phase4_Card from '../components/Phase4_Card';
 
-export default function GameManager() {
+function GameContent() {
     const { state, setCreatorPhoto, setCreatorName } = useGame();
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
@@ -45,4 +45,12 @@ export default function GameManager() {
         default:
             return <div>Unknown Phase</div>;
     }
+}
+
+export default function GameManager() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading game...</div>}>
+            <GameContent />
+        </Suspense>
+    );
 }
