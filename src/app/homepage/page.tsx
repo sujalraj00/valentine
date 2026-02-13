@@ -73,8 +73,8 @@ export default function Homepage() {
                                         onClick={() => setShowQuiz(true)}
                                         className="px-8 py-4 rounded-full bg-pink-600 text-white font-bold text-lg hover:bg-pink-700 transition-all hover:scale-105 inline-flex items-center justify-center gap-2 group shadow-lg"
                                     >
-                                        <Icon name="SparklesIcon" size={20} />
-                                        <span>Start Quiz Challenge</span>
+                                        <Icon name="HeartIcon" size={20} />
+                                        <span>Will You Be My Valentine?</span>
                                     </button>
 
                                     <button
@@ -188,8 +188,8 @@ export default function Homepage() {
                                 onClick={() => setShowQuiz(true)}
                                 className="px-12 py-6 rounded-full bg-pink-600 text-white font-bold text-xl hover:bg-pink-700 transition-all hover:scale-105 inline-flex items-center justify-center gap-3 shadow-xl"
                             >
-                                <Icon name="SparklesIcon" size={24} />
-                                <span>Quiz Challenge</span>
+                                <Icon name="HeartIcon" size={24} />
+                                <span>Will You Be My Valentine?</span>
                             </button>
                         </div>
 

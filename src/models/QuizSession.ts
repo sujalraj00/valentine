@@ -16,6 +16,8 @@ export interface IQuizSession extends Document {
     p2Score: number;
     p1Finished: boolean;
     p2Finished: boolean;
+    proposalAccepted: boolean;
+    p2Answers?: Record<string, string>;
     currentQuestionIndex: number; // For synchronization if needed
     questions: IQuizQuestion[];
     createdAt: Date;
@@ -31,6 +33,8 @@ const QuizSessionSchema: Schema = new Schema({
     p2Score: { type: Number, default: 0 },
     p1Finished: { type: Boolean, default: false },
     p2Finished: { type: Boolean, default: false },
+    proposalAccepted: { type: Boolean, default: false },
+    p2Answers: { type: Map, of: String, default: {} }, // Store QuestionID -> Answer mapping
     currentQuestionIndex: { type: Number, default: 0 },
     questions: [
         {

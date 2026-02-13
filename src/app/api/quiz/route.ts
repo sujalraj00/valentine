@@ -24,11 +24,12 @@ export async function POST(request: Request) {
         if (action === 'create') {
             const newSessionId = Math.random().toString(36).substr(2, 9);
             const player1Id = Math.random().toString(36).substr(2, 9);
+            const { questions } = body; // Extract custom questions
 
             const session = await QuizSession.create({
                 sessionId: newSessionId,
                 player1Id,
-                questions: DEFAULT_QUESTIONS // In a real app, these could be custom
+                questions: questions || DEFAULT_QUESTIONS
             });
 
             return NextResponse.json({ success: true, sessionId: newSessionId, playerId: player1Id }, { status: 201 });
@@ -37,18 +38,32 @@ export async function POST(request: Request) {
         if (action === 'join') {
             const session = await QuizSession.findOne({ sessionId });
             if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
-            if (session.player2Id) return NextResponse.json({ error: 'Session full' }, { status: 400 });
+            // Allow re-joining if playerId matches (persistence check? not implemented yet)
 
-            const player2Id = Math.random().toString(36).substr(2, 9);
-            session.player2Id = player2Id;
-            await session.save();
+            if (!session.player2Id) {
+                const player2Id = Math.random().toString(36).substr(2, 9);
+                session.player2Id = player2Id;
+                await session.save();
+                return NextResponse.json({ success: true, playerId: player2Id });
+            }
 
-            return NextResponse.json({ success: true, playerId: player2Id });
+            // If P2 exists, just return success (maybe they refreshed). Ideally verify ID but for now simple open.
+            return NextResponse.json({ success: true, playerId: session.player2Id });
         }
 
         if (action === 'update') {
             const session = await QuizSession.findOne({ sessionId });
             if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+
+            const { proposalAccepted, p2Answers } = body;
+
+            if (proposalAccepted !== undefined) {
+                session.proposalAccepted = proposalAccepted;
+            }
+
+            if (p2Answers !== undefined) {
+                session.p2Answers = p2Answers;
+            }
 
             if (playerId === session.player1Id) {
                 if (ready !== undefined) session.p1Ready = ready;
