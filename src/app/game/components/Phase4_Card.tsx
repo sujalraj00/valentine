@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useGame } from '../context/GameContext';
+import { useSearchParams } from 'next/navigation';
 import { Heart, Download } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -9,6 +10,43 @@ import jsPDF from 'jspdf';
 export default function Phase4_Card() {
     const { state, resetGame } = useGame();
     const cardRef = useRef<HTMLDivElement>(null);
+    const searchParams = useSearchParams();
+    const gameId = searchParams.get('id');
+
+    useEffect(() => {
+        if (!gameId) return;
+
+        // Ensure we send the data once we have dateChoices. 
+        // If the user rushed and dateChoices is empty, we still want to mark as finished? 
+        // Maybe better to wait a moment or send what we have.
+        // Let's send even if empty to at least trigger "Proposal Accepted".
+
+        const saveData = async () => {
+            try {
+                await fetch(`/api/game/${gameId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        finished: true,
+                        dateChoices: state.dateChoices,
+                        partnerName: state.partnerName || "Partner"
+                    })
+                });
+            } catch (err) {
+                console.error("Failed to save game:", err);
+            }
+        };
+
+        // Debounce slightly to ensure state is settled? 
+        // Actually, just calling it when dependency changes is fine.
+        if (state.dateChoices.length > 0) {
+            saveData();
+        } else {
+            // Fallback: If for some reason they have no choices (skipped?), still mark finished after a delay
+            const timer = setTimeout(saveData, 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [gameId, state.dateChoices, state.partnerName]);
 
     const handleDownload = async () => {
         if (cardRef.current) {

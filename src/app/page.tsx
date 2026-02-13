@@ -33,7 +33,7 @@ export default function Homepage() {
             href: "/create-e-card"
         },
         {
-            title: "Play \"Love Quest\"",
+            title: "Will You Be My Valentine?",
             description: "Create a personalized game, share the link, and let your partner play to reach you!",
             icon: <span className="text-4xl">🎮</span>,
             bgColor: "bg-red-100",

@@ -143,6 +143,9 @@ export default function CreatorPage() {
                     </div>
                 ) : (
                     <div className="space-y-6 text-center animate-in fade-in zoom-in duration-300">
+                        {/* POLLING RESULT UI */}
+                        <PollingResult gameId={link.split('id=')[1]} />
+
                         <div className="bg-green-100 p-4 rounded-lg text-green-700 mb-4">
                             Details Saved! Share this link with your Valentine.
                         </div>
@@ -165,6 +168,66 @@ export default function CreatorPage() {
                     </div>
                 )}
             </div>
+        </div>
+    );
+}
+
+function PollingResult({ gameId }: { gameId: string }) {
+    const [result, setResult] = useState<any>(null);
+
+    React.useEffect(() => {
+        if (!gameId) return;
+
+        const checkStatus = async () => {
+            try {
+                const res = await fetch(`/api/game/${gameId}`);
+                const data = await res.json();
+                console.log("Polling data:", data); // Debug log
+                if (data.finished) {
+                    setResult(data);
+                    // We don't clear interval here immediately to allow for dateChoices to populate if they come slightly later? 
+                    // No, if finished is true, dateChoices should be there.
+                }
+            } catch (e) {
+                console.error("Polling error", e);
+            }
+        };
+
+        const interval = setInterval(checkStatus, 2000); // Check every 2 seconds
+        checkStatus(); // Initial check
+
+        return () => clearInterval(interval);
+    }, [gameId]);
+
+    if (!result) {
+        return (
+            <div className="p-6 border-2 border-dashed border-pink-300 rounded-xl bg-pink-50 animate-pulse">
+                <p className="font-bold text-pink-500 mb-2">Waiting for your partner to play...</p>
+                <div className="w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <p className="text-xs text-gray-400 mt-2">Checking game status...</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="p-6 bg-gradient-to-br from-pink-100 to-red-100 rounded-xl border-2 border-pink-500 shadow-xl animate-bounce">
+            <h2 className="text-2xl font-black text-pink-600 mb-2 font-cinzel">💞 Proposal Accepted! 💞</h2>
+            <p className="text-gray-700 mb-4">They said YES and finished the game!</p>
+
+            {result.dateChoices && result.dateChoices.length > 0 ? (
+                <div className="bg-white/50 p-4 rounded-lg text-left">
+                    <p className="text-xs font-bold text-pink-500 uppercase tracking-widest mb-2">Their Perfect Date:</p>
+                    <ul className="space-y-1">
+                        {result.dateChoices.map((choice: string, i: number) => (
+                            <li key={i} className="flex items-center gap-2 text-sm font-bold text-gray-800">
+                                <span className="text-red-500">❤️</span> {choice}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ) : (
+                <p className="text-sm text-gray-500 italic">No date choices recorded (or they rushed!)</p>
+            )}
         </div>
     );
 }
