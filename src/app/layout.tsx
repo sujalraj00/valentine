@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Inter, Cinzel } from 'next/font/google';
+import { Analytics } from "@vercel/analytics/next";
 import '../styles/index.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -32,7 +33,9 @@ export default function RootLayout({
             <body className="font-sans antialiased text-foreground bg-background selection:bg-primary/30 min-h-screen flex flex-col">{children}
 
                 <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fvalentinev7491back.builtwithrocket.new&_be=https%3A%2F%2Fappanalytics.rocket.new&_v=0.1.17" />
-                <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2" /></body>
+                <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2" />
+                <Analytics />
+            </body>
         </html>
     );
 }

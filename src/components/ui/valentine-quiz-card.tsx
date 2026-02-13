@@ -4,6 +4,9 @@ import { Instagram, Twitter, Heart } from "lucide-react";
 export interface ValentineQuizCardProps extends React.HTMLAttributes<HTMLDivElement> {
     title?: string;
     description?: string;
+    shareUrl?: string;
+    partner1Image?: string;
+    partner2Image?: string;
 }
 
 const ValentineQuizCard = React.forwardRef<HTMLDivElement, ValentineQuizCardProps>(
