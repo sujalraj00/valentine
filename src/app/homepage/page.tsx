@@ -1,5 +1,6 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
+"use client";
+
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/common/Header';
 import Footer from '@/components/common/Footer';
 import HeroGallery from './components/HeroGallery';
@@ -8,13 +9,23 @@ import ThemeCarousel from './components/ThemeCarousel';
 import FeaturesBento from './components/FeaturesBento';
 import TestimonialCards from './components/TestimonialCards';
 import Icon from '@/components/ui/AppIcon';
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
-export const metadata: Metadata = {
-    title: 'ValentineViralCard - Create AI-Powered Valentine E-Cards',
-    description: 'Create stunning AI-generated Valentine\'s Day e-cards with custom photos, relationship timelines, and countdown reveals. Share your love story like never before.',
-}
+const QuizController = dynamic(() => import('./components/QuizController'), { ssr: false });
+const CardCreator = dynamic(() => import('./components/CardCreator'), { ssr: false });
 
 export default function Homepage() {
+    const [showQuiz, setShowQuiz] = useState(false);
+    const [showCardCreator, setShowCardCreator] = useState(false);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('join')) {
+            setShowQuiz(true);
+        }
+    }, []);
+
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
@@ -50,21 +61,30 @@ export default function Homepage() {
                                     </p>
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+                                <div className="flex flex-wrap gap-5 justify-center lg:justify-start">
                                     <Link
                                         href="/create-e-card"
                                         className="px-8 py-4 rounded-full bg-primary text-white font-bold text-lg hover:bg-primary/90 transition-all hover:scale-105 romantic-glow inline-flex items-center justify-center gap-2 group shadow-lg shadow-primary/25"
                                     >
-                                        <span>Create Your Card Now</span>
+                                        <span>Full E-Card Builder</span>
                                         <Icon name="ArrowRightIcon" size={20} className="group-hover:translate-x-1 transition-transform" />
                                     </Link>
-                                    <Link
-                                        href="/card-view"
+
+                                    <button
+                                        onClick={() => setShowQuiz(true)}
+                                        className="px-8 py-4 rounded-full bg-pink-600 text-white font-bold text-lg hover:bg-pink-700 transition-all hover:scale-105 inline-flex items-center justify-center gap-2 group shadow-lg"
+                                    >
+                                        <Icon name="SparklesIcon" size={20} />
+                                        <span>Start Quiz Challenge</span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => setShowCardCreator(true)}
                                         className="px-8 py-4 rounded-full bg-white/5 border border-white/10 text-foreground font-bold text-lg hover:bg-white/10 transition-all inline-flex items-center justify-center gap-2 backdrop-blur-sm"
                                     >
                                         <Icon name="PhotoIcon" size={20} />
-                                        <span>View Examples</span>
-                                    </Link>
+                                        <span>Quick Couple Card</span>
+                                    </button>
                                 </div>
 
                                 <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/5">
@@ -142,24 +162,6 @@ export default function Homepage() {
                     </div>
                 </section>
 
-                {/* Testimonials Section */}
-                <section className="py-32 relative overflow-hidden">
-                    {/* Decor */}
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
-
-                    <div className="max-w-7xl mx-auto px-6 relative z-10">
-                        <div className="text-center space-y-6 mb-20">
-                            <h2 className="text-4xl md:text-6xl font-serif font-bold tracking-tight">
-                                Love Stories <span className="text-gradient-valentine">Created</span>
-                            </h2>
-                            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
-                                See how couples around the world are using ValentineViralCard to celebrate their love.
-                            </p>
-                        </div>
-                        <TestimonialCards />
-                    </div>
-                </section>
-
                 {/* Final CTA Section */}
                 <section className="py-40 relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent" />
@@ -173,19 +175,23 @@ export default function Homepage() {
                             <span className="block text-gradient-valentine mt-4">Your Love Story?</span>
                         </h2>
 
-                        <p className="text-2xl text-muted-foreground max-w-2xl mx-auto font-light">
-                            Join thousands of couples creating unforgettable Valentine's Day moments with AI-powered cards.
-                        </p>
-
-                        <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
+                        <div className="flex flex-wrap gap-6 justify-center pt-8">
                             <Link
                                 href="/create-e-card"
                                 className="px-12 py-6 rounded-full bg-primary text-white font-bold text-xl hover:bg-primary/90 transition-all hover:scale-105 romantic-glow inline-flex items-center justify-center gap-3 group shadow-xl"
                             >
                                 <Icon name="SparklesIcon" size={24} />
-                                <span>Start Creating Free</span>
+                                <span>Start Creating</span>
                                 <Icon name="ArrowRightIcon" size={24} className="group-hover:translate-x-1 transition-transform" />
                             </Link>
+
+                            <button
+                                onClick={() => setShowQuiz(true)}
+                                className="px-12 py-6 rounded-full bg-pink-600 text-white font-bold text-xl hover:bg-pink-700 transition-all hover:scale-105 inline-flex items-center justify-center gap-3 shadow-xl"
+                            >
+                                <Icon name="SparklesIcon" size={24} />
+                                <span>Quiz Challenge</span>
+                            </button>
                         </div>
 
                         <p className="text-sm text-muted-foreground opacity-60">
@@ -195,7 +201,10 @@ export default function Homepage() {
                 </section>
             </main>
 
+            {showQuiz && <QuizController onClose={() => setShowQuiz(false)} />}
+            {showCardCreator && <CardCreator onClose={() => setShowCardCreator(false)} />}
+
             <Footer />
         </div>
-    )
+    );
 }
