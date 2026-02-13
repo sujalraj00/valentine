@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        /* Core Colors - Dark Romantic Theme */
+        --background: 0 0% 4%;
+        /* #0F0A0A */
+        --foreground: 0 0% 98%;
+        /* #FAFAFA */
+
+        --card: 12 6% 10%;
+        /* Darker card background */
+        --card-foreground: 0 0% 98%;
+
+        --popover: 12 6% 10%;
+        --popover-foreground: 0 0% 98%;
+
+        --primary: 346 87% 43%;
+        /* Rose 600 - #e11d48 */
+        --primary-foreground: 0 0% 100%;
+
+        --secondary: 45 93% 47%;
+        /* Gold/Amber - #fbbf24 */
+        --secondary-foreground: 12 6% 10%;
+
+        --muted: 12 6% 15%;
+        --muted-foreground: 0 0% 65%;
+
+        --accent: 346 87% 43%;
+        --accent-foreground: 0 0% 98%;
+
+        --destructive: 0 62% 30%;
+        --destructive-foreground: 0 0% 98%;
+
+        --border: 12 6% 15%;
+        --input: 12 6% 15%;
+        --ring: 346 87% 43%;
+
+        --radius: 1rem;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer components {
+    .glass-card {
+        @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-2xl;
+    }
+
+    .glass-panel {
+        @apply bg-white/5 backdrop-blur-lg border border-white/10;
+    }
+
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-rose-500 via-red-500 to-amber-500;
+    }
+
+    .text-gradient-gold {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500;
+    }
+}
+
+@layer utilities {
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-pulse-slow {
+        animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .delay-100 {
+        animation-delay: 100ms;
+    }
+
+    .delay-200 {
+        animation-delay: 200ms;
+    }
+
+    .delay-300 {
+        animation-delay: 300ms;
+    }
+
+    .delay-500 {
+        animation-delay: 500ms;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
