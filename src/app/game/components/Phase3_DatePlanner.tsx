@@ -133,12 +133,23 @@ export default function Phase3_DatePlanner() {
     // But since it's inside requestAnimationFrame, we need to be careful.
     // Let's modify handleChoice to be robust.
 
-    const handleChoice = (choice: string) => {
-        // Prevent double trigger if already transitioning?
-        // simple way: index check? Logic handles it by changing question index or phase.
+    const [showNaughtyDialog, setShowNaughtyDialog] = useState(false);
 
-        // We need to ensure we don't trigger 60 times a second.
-        // We can just rely on state update to re-render and kill this loop instance.
+    const handleChoice = (choice: string) => {
+        // Check for specific "Sleep In" choice
+        if (choice.includes("Sleep In")) {
+            setShowNaughtyDialog(true);
+            setTimeout(() => {
+                setShowNaughtyDialog(false);
+                proceedWithChoice(choice);
+            }, 2000); // Show for 2 seconds
+            return;
+        }
+
+        proceedWithChoice(choice);
+    };
+
+    const proceedWithChoice = (choice: string) => {
         addDateChoice(choice);
 
         setPlayer({ x: 50, y: 300, vy: 0, grounded: false });
@@ -190,8 +201,19 @@ export default function Phase3_DatePlanner() {
                 style={{ top: FLOOR_Y + 60 }}
             ></div>
 
+            {/* Naughty Dialog Overlay */}
+            {showNaughtyDialog && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-white rounded-2xl p-8 shadow-2xl transform animate-bounce text-center border-4 border-pink-400">
+                        <div className="text-6xl mb-4">😈</div>
+                        <h3 className="text-3xl font-bold text-pink-600 font-cinzel">Naughty!</h3>
+                        <p className="text-gray-600 mt-2 font-medium">I see what you're thinking...</p>
+                    </div>
+                </div>
+            )}
+
             {/* Instruction overlay for first level */}
-            {currentQuestionIndex === 0 && (
+            {currentQuestionIndex === 0 && !showNaughtyDialog && (
                 <div className="absolute bottom-10 left-10 p-4 bg-white/80 rounded-lg backdrop-blur text-sm max-w-xs">
                     <p><strong>Tip:</strong> Use Arrow Keys to move. Jump <strong>UP</strong> into the blocks to select them!</p>
                 </div>
